@@ -27,8 +27,8 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/views", express.static(path.join(__dirname, "views")));
 
 //main Admin api
-// const mainRoute = require("./routes/mainRoutes");
-// app.use("/v1/kanavneelapi", mainRoute);
+const mainRoute = require("./routes/mainRoutes");
+app.use("/v1/kanavneelapi", mainRoute);
 
 //test api
 app.get("/", (req, res) => {
