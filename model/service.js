@@ -7,6 +7,24 @@ const service = new mongoose.Schema({
     type: String,
     default: ""
   },
+  franchiseId: {
+    type: mongoose.Schema.Types.ObjectId
+  },
+  franchiseName: {
+    type: String
+  },
+  franchisePhone: {
+    type: String
+  },
+  servicemanId: {
+    type: mongoose.Schema.Types.ObjectId
+  },
+  servicemanName: {
+    type: String
+  },
+  servicemanPhone: {
+    type: String
+  },
   bookingId: {
     type: mongoose.Schema.Types.ObjectId
   },

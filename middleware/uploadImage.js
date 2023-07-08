@@ -138,3 +138,26 @@ exports.upload_businesSetting = multer({
   },
   limits: { fileSize: businesSettingMaxSize }
 });
+
+// middleware for uploading the bannerImg
+const bannerImgStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads/bannerImg");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  }
+});
+const bannerImgMaxSize = 30 * 1024 * 1024;
+exports.upload_bannerImg = multer({
+  storage: bannerImgStorage,
+  fileFilter: (req, file, cb) => {
+    if (file.originalname.match(/\.(png|PNG|jpg|pdf)$/)) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error("This file extension is not allowed"));
+    }
+  },
+  limits: { fileSize: bannerImgMaxSize }
+});

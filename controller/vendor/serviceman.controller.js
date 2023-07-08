@@ -44,6 +44,10 @@ exports.addServiceman = async function (req, res) {
         { _id: req.body.cityId },
         { title: 1 }
       );
+      const vendor = await franchiseModel.findOne(
+        { _id: req.userId },
+        { companyName: 1, companyPhone: 1 }
+      );
 
       const logDate = new Date().toISOString();
       const pass = bcrypt.hashSync(req.body.password, 10);
@@ -53,6 +57,9 @@ exports.addServiceman = async function (req, res) {
         lastName: req.body.lastName,
         phone: req.body.phone,
         aadhaarNumber: req.body.aadhaarNumber,
+        franchiseId: req.userId,
+        franchiseName: vendor ? vendor.companyName : "",
+        franchisePhone: vendor ? vendor.companyPhone : "",
         stateId: req.body.stateId,
         stateName: stater ? stater.title : "",
         districtId: req.body.districtId,
@@ -107,6 +114,7 @@ exports.getAllServicemans = async function (req, res) {
         ]
       };
     }
+    condition.franchiseId = req.userId;
     condition.isdelete = "No";
     console.log(condition);
 
@@ -127,94 +135,119 @@ exports.getAllServicemans = async function (req, res) {
   }
 };
 
-// // get Customer
-// exports.getCustomer = async function (req, res) {
-//   try {
-//     const result = await servicemanModel.find({ _id: req.body._id });
+// get Serviceman
+exports.getServiceman = async function (req, res) {
+  try {
+    const result = await servicemanModel.find({ _id: req.body._id });
 
-//     res.status(200).json({
-//       success: true,
-//       message: "Serviceman data has been retrieved successfully",
-//       serviceResult: result
-//     });
-//   } catch (err) {
-//     res.status(400).json({
-//       success: false,
-//       message: err.message ?? "Bad request"
-//     });
-//   }
-// };
+    res.status(200).json({
+      success: true,
+      message: "Serviceman data has been retrieved successfully",
+      serviceResult: result
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: err.message ?? "Bad request"
+    });
+  }
+};
 
-// // edit Customer
-// exports.editCustomer = async function (req, res) {
-//   try {
-//     const logDate = new Date().toISOString();
+// edit Serviceman
+exports.editServiceman = async function (req, res) {
+  try {
+    const logDate = new Date().toISOString();
+    const stater = await stateModel.findOne(
+      { _id: req.body.stateId },
+      { title: 1 }
+    );
+    const distr = await districtModel.findOne(
+      { _id: req.body.districtId },
+      { title: 1 }
+    );
+    const cityr = await cityModel.findOne(
+      { _id: req.body.cityId },
+      { title: 1 }
+    );
 
-//     const result = await servicemanModel.updateOne(
-//       { _id: req.params.id },
-//       {
-//         $set: {
-//           customerName: req.body.customerName,
-//           phone: req.body.phone,
-//           email: req.body.email,
-//           address: req.body.address,
-//           profilePic: req.file ? req.file.path : console.log("No Img"),
-//           logModifiedDate: logDate
-//         }
-//       },
-//       { new: true }
-//     );
+    const result = await servicemanModel.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          phone: req.body.phone,
+          aadhaarNumber: req.body.aadhaarNumber,
+          stateId: req.body.stateId,
+          stateName: stater ? stater.title : "",
+          districtId: req.body.districtId,
+          districtName: distr ? distr.title : "",
+          cityId: req.body.cityId,
+          cityName: cityr ? cityr.title : "",
+          address: req.body.address,
+          email: req.body.email,
+          profilePic: req.files.profilePic
+            ? req.files.profilePic[0].path
+            : console.log("No Img"),
+          idImage: req.files.idImage
+            ? req.files.idImage[0].path
+            : console.log("No Img"),
+          logModifiedDate: logDate
+        }
+      },
+      { new: true }
+    );
 
-//     if (result) {
-//       return res.status(200).json({
-//         success: true,
-//         message: "Customer has been updated successfully"
-//       });
-//     } else {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Customer could not be updated"
-//       });
-//     }
-//   } catch (err) {
-//     res.status(400).json({
-//       success: false,
-//       message: err.message ?? "Something went wrong!"
-//     });
-//   }
-// };
+    if (result) {
+      return res.status(200).json({
+        success: true,
+        message: "Serviceman has been updated successfully"
+      });
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: "Serviceman could not be updated"
+      });
+    }
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: err.message ?? "Something went wrong!"
+    });
+  }
+};
 
-// // delete Customer
-// exports.changeCustomerAsDelete = async function (req, res) {
-//   try {
-//     const logDate = new Date().toISOString();
+// delete Serviceman
+exports.changeServicemanAsDelete = async function (req, res) {
+  try {
+    const logDate = new Date().toISOString();
 
-//     const result = await servicemanModel.updateOne(
-//       { _id: req.params.id },
-//       {
-//         $set: {
-//           isdelete: "Yes",
-//           logModifiedDate: logDate
-//         }
-//       },
-//       { new: true }
-//     );
+    const result = await servicemanModel.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          isdelete: "Yes",
+          logModifiedDate: logDate
+        }
+      },
+      { new: true }
+    );
 
-//     if (result) {
-//       return res.status(200).json({
-//         success: true,
-//         message: "Customer has been deleted successfully"
-//       });
-//     } else {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Customer could not be deleted"
-//       });
-//     }
-//   } catch (err) {
-//     res.status(400).json({
-//       success: false,
-//       message: err.message ?? "Something went wrong!"
-//     });
-//   }
-// };
+    if (result) {
+      return res.status(200).json({
+        success: true,
+        message: "Serviceman has been deleted successfully"
+      });
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: "Serviceman could not be deleted"
+      });
+    }
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: err.message ?? "Something went wrong!"
+    });
+  }
+};

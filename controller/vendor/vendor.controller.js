@@ -206,15 +206,15 @@ exports.editVendorProfile = async function (req, res) {
   }
 };
 
-// update admin profile image
-exports.editAdminProfileImage = async function (req, res) {
+// update vendor Company Image
+exports.editCompanyidImage = async function (req, res) {
   try {
     const logDate = new Date().toISOString();
     const profileResult = await vendorModel.updateOne(
       { _id: req.userId },
       {
         $set: {
-          profilePic: req.file ? req.file.path : console.log("No Img"),
+          companyIdImage: req.file ? req.file.path : console.log("No Img"),
           logModifiedDate: logDate
         }
       },
@@ -225,7 +225,7 @@ exports.editAdminProfileImage = async function (req, res) {
     if (profileResult) {
       res.status(200).json({
         success: true,
-        message: "Your profile was successfully updated."
+        message: "ID image has been successfully updated."
       });
     } else {
       res.status(400).json({ success: false, message: "Bad request" });
@@ -235,9 +235,38 @@ exports.editAdminProfileImage = async function (req, res) {
   }
 };
 
-// change admin password
+// update vendor logo
+exports.editVendorLogo = async function (req, res) {
+  try {
+    const logDate = new Date().toISOString();
+    const profileResult = await vendorModel.updateOne(
+      { _id: req.userId },
+      {
+        $set: {
+          companyLogo: req.file ? req.file.path : console.log("No Img"),
+          logModifiedDate: logDate
+        }
+      },
+      { new: true }
+    );
+
+    // console.log(req.userId);
+    if (profileResult) {
+      res.status(200).json({
+        success: true,
+        message: "Logo has been successfully updated."
+      });
+    } else {
+      res.status(400).json({ success: false, message: "Bad request" });
+    }
+  } catch (err) {
+    res.status(400).json({ success: false, message: "Somthing went wrong" });
+  }
+};
+
+// change Vendor password
 // update password
-exports.changeAdminPassword = async function (req, res) {
+exports.changeVendorPassword = async function (req, res) {
   try {
     // console.log(req.body);
     let logDate = new Date().toISOString();
@@ -272,7 +301,7 @@ exports.changeAdminPassword = async function (req, res) {
       } else {
         res
           .status(400)
-          .json({ success: false, message: "New passwords does not match" });
+          .json({ success: false, message: "Old and New passwords does not match" });
       }
     } else {
       res.status(400).json({ success: false, message: "Invalid old password" });

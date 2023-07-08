@@ -62,6 +62,11 @@ const serviceman = new mongoose.Schema({
   idImage: {
     type: String
   },
+  notificationBell: {
+    type: Boolean,
+    enum: [false, true],
+    default: true
+  },
   isdelete: {
     type: String,
     enum: ["Yes", "No"],

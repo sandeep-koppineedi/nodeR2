@@ -31,4 +31,25 @@ authRoutes.put(
   authController.editVendorProfile
 );
 
+authRoutes.put(
+  "/editcompanyimg",
+  verifyAdminToken,
+  upload_franchise.single("companyIdImage"),
+  authController.editCompanyidImage
+);
+
+authRoutes.put(
+  "/editcompanylogo",
+  verifyAdminToken,
+  upload_franchise.single("companyLogo"),
+  authController.editVendorLogo
+);
+
+authRoutes.put(
+  "/changepassword",
+  verifyAdminToken,
+  upload_franchise.none(),
+  authController.changeVendorPassword
+);
+
 module.exports = authRoutes;

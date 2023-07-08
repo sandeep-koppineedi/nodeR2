@@ -19,10 +19,24 @@ const customer = new mongoose.Schema({
     trim: true
   },
   address: {
-    type: String,
+    type: String
   },
   profilePic: {
-    type: String,
+    type: String
+  },
+  franchiseId: {
+    type: mongoose.Schema.Types.ObjectId
+  },
+  franchiseName: {
+    type: String
+  },
+  franchisePhone: {
+    type: String
+  },
+  notificationBell: {
+    type: Boolean,
+    enum: [false, true],
+    default: true
   },
   isdelete: {
     type: String,

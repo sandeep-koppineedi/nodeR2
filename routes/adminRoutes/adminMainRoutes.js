@@ -18,6 +18,10 @@ const complaintRoutes = require("./complaint.routes");
 const couponRoutes = require("./coupon.routes");
 const paygatewayRoutes = require("./paymentGateway.routes");
 const businessRoutes = require("./businessSetting.routes");
+const settingRoutes = require("./setting.routes");
+const faqRoutes = require("./faq.routes");
+const bannerRoutes = require("./banner.routes");
+const commonNotifRoutes = require("./commonNotification.routes");
 
 /***************** Admin API ******************/
 adminRoute.use("/auth", adminRoutes);
@@ -60,5 +64,17 @@ adminRoute.use("/paymentgateway", paygatewayRoutes);
 
 /***************** businesssetting API ******************/
 adminRoute.use("/businesssetting", businessRoutes);
+
+/***************** setting API ******************/
+adminRoute.use("/setting", settingRoutes);
+
+/***************** faq API ******************/
+adminRoute.use("/faq", faqRoutes);
+
+/***************** banner API ******************/
+adminRoute.use("/banner", bannerRoutes);
+
+/***************** commonnotification API ******************/
+adminRoute.use("/commonnotification", commonNotifRoutes);
 
 module.exports = adminRoute;

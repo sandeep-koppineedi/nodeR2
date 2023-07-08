@@ -22,6 +22,15 @@ const complaint = new mongoose.Schema({
   ticketId: {
     type: String
   },
+  franchiseId: {
+    type: mongoose.Schema.Types.ObjectId
+  },
+  franchiseName: {
+    type: String
+  },
+  franchisePhone: {
+    type: String
+  },
   status: {
     type: String,
     enum: ["pending", "completed", "rejected"],

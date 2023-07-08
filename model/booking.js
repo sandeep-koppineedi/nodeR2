@@ -7,6 +7,15 @@ const booking = new mongoose.Schema({
     type: String,
     default: ""
   },
+  franchiseId: {
+    type: mongoose.Schema.Types.ObjectId
+  },
+  franchiseName: {
+    type: String
+  },
+  franchisePhone: {
+    type: String
+  },
   planId: {
     type: mongoose.Schema.Types.ObjectId
   },
