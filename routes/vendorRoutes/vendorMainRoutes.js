@@ -17,6 +17,7 @@ const cityRoutes = require("./city.routes");
 const settingRoutes = require("./setting.routes");
 const faqRoutes = require("./faq.routes");
 const servicemanNotifRoutes = require("./servicemanNotification.routes");
+const reportRoutes = require("./report.routes");
 
 /***************** vendor auth API ******************/
 vendorRoute.use("/auth", authRoutes);
@@ -53,5 +54,8 @@ vendorRoute.use("/faq", faqRoutes);
 
 /***************** servicemanNotification API ******************/
 vendorRoute.use("/servicemanNotification", servicemanNotifRoutes);
+
+/***************** report API ******************/
+vendorRoute.use("/report", reportRoutes);
 
 module.exports = vendorRoute;
