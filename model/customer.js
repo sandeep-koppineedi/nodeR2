@@ -33,6 +33,15 @@ const customer = new mongoose.Schema({
   franchisePhone: {
     type: String
   },
+  servicemanId: {
+    type: mongoose.Schema.Types.ObjectId
+  },
+  servicemanName: {
+    type: String
+  },
+  servicemanPhone: {
+    type: String
+  },
   notificationBell: {
     type: Boolean,
     enum: [false, true],
