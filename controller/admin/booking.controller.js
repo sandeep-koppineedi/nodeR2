@@ -73,7 +73,7 @@ exports.addBooking = async function (req, res) {
       expiryDate: monthDate,
       status: "pending",
       logCreatedDate: logDate,
-      logModifiedDate: logDate
+      logModifiedDate: logDate,
     });
 
     const saveBooking = await bookObj.save();
@@ -87,24 +87,172 @@ exports.addBooking = async function (req, res) {
   }
 };
 
-// get all cities
-exports.getAllBookings = async function (req, res) {
+// get all pendingBooking
+exports.getAllPendingBookings = async function (req, res) {
   try {
     let condition = {};
     let regex = new RegExp(req.query.searchQuery, "i");
     if (req.query.searchQuery) {
       condition = {
-        $or: [{ userName: regex }, { planName: regex }, { status: regex }]
+        $or: [{ userName: regex }, { planName: regex }],
       };
     }
+    condition.status = "pending";
     console.log(condition);
 
-    const data = await bookingModel.find(condition).sort({ logCreatedDate: -1 });
+    const data = await bookingModel
+      .find(condition)
+      .sort({ logCreatedDate: -1 });
 
     res.status(200).json({
       success: true,
       message: "Bookings have been retrieved successfully",
-      bookingResult: data
+      bookingResult: data,
+    });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message ?? "Bad request" });
+  }
+};
+
+// get all AcceptedBooking
+exports.getAllAcceptedBookings = async function (req, res) {
+  try {
+    let condition = {};
+    let regex = new RegExp(req.query.searchQuery, "i");
+    if (req.query.searchQuery) {
+      condition = {
+        $or: [{ userName: regex }, { planName: regex }],
+      };
+    }
+    condition.status = "accepted";
+    console.log(condition);
+
+    const data = await bookingModel
+      .find(condition)
+      .sort({ logCreatedDate: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "Bookings have been retrieved successfully",
+      bookingResult: data,
+    });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message ?? "Bad request" });
+  }
+};
+
+// get all AssignedBooking
+exports.getAllAssignedBookings = async function (req, res) {
+  try {
+    let condition = {};
+    let regex = new RegExp(req.query.searchQuery, "i");
+    if (req.query.searchQuery) {
+      condition = {
+        $or: [{ userName: regex }, { planName: regex }],
+      };
+    }
+    condition.status = "assigned";
+    console.log(condition);
+
+    const data = await bookingModel
+      .find(condition)
+      .sort({ logCreatedDate: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "Bookings have been retrieved successfully",
+      bookingResult: data,
+    });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message ?? "Bad request" });
+  }
+};
+
+// get all InProgressBooking
+exports.getAllInProgressBookings = async function (req, res) {
+  try {
+    let condition = {};
+    let regex = new RegExp(req.query.searchQuery, "i");
+    if (req.query.searchQuery) {
+      condition = {
+        $or: [{ userName: regex }, { planName: regex }],
+      };
+    }
+    condition.status = "inProgress";
+    console.log(condition);
+
+    const data = await bookingModel
+      .find(condition)
+      .sort({ logCreatedDate: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "Bookings have been retrieved successfully",
+      bookingResult: data,
+    });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message ?? "Bad request" });
+  }
+};
+
+// get all CompletedBooking
+exports.getAllCompletedBookings = async function (req, res) {
+  try {
+    let condition = {};
+    let regex = new RegExp(req.query.searchQuery, "i");
+    if (req.query.searchQuery) {
+      condition = {
+        $or: [{ userName: regex }, { planName: regex }],
+      };
+    }
+    condition.status = "completed";
+    console.log(condition);
+
+    const data = await bookingModel
+      .find(condition)
+      .sort({ logCreatedDate: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "Bookings have been retrieved successfully",
+      bookingResult: data,
+    });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message ?? "Bad request" });
+  }
+};
+
+// get all CanceledBooking
+exports.getAllCanceledBookings = async function (req, res) {
+  try {
+    let condition = {};
+    let regex = new RegExp(req.query.searchQuery, "i");
+    if (req.query.searchQuery) {
+      condition = {
+        $or: [{ userName: regex }, { planName: regex }],
+      };
+    }
+    condition.status = "canceled";
+    console.log(condition);
+
+    const data = await bookingModel
+      .find(condition)
+      .sort({ logCreatedDate: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "Bookings have been retrieved successfully",
+      bookingResult: data,
     });
   } catch (err) {
     res
@@ -123,7 +271,7 @@ exports.getAllNonDeletedCities = async function (req, res) {
     res.status(200).json({
       success: true,
       message: "Cities have been retrieved successfully",
-      cityResult: data
+      cityResult: data,
     });
   } catch (err) {
     res
@@ -137,14 +285,14 @@ exports.getAllCitiesByDist = async function (req, res) {
   try {
     const data = await cityModel
       .find({
-        $and: [{ districtId: req.body.districtId }, { isdeleted: "No" }]
+        $and: [{ districtId: req.body.districtId }, { isdeleted: "No" }],
       })
       .sort({ logCreatedDate: -1 });
 
     res.status(200).json({
       success: true,
       message: "Cities have been retrieved successfully",
-      cityResult: data
+      cityResult: data,
     });
   } catch (err) {
     res
@@ -161,7 +309,7 @@ exports.getCity = async function (req, res) {
     res.status(200).json({
       success: true,
       message: "City has been retrieved successfully",
-      cityResult: data ?? {}
+      cityResult: data ?? {},
     });
   } catch (err) {
     res
@@ -191,8 +339,8 @@ exports.editCity = async function (req, res) {
           stateName: stater ? stater.title : "",
           districtId: req.body.districtId,
           districtName: distr ? distr.title : "",
-          logModifiedDate: logDate
-        }
+          logModifiedDate: logDate,
+        },
       },
       { new: true }
     );
@@ -200,7 +348,7 @@ exports.editCity = async function (req, res) {
     if (City) {
       res.status(200).json({
         success: true,
-        message: "City has been updated successfully"
+        message: "City has been updated successfully",
       });
     }
   } catch (err) {
@@ -219,8 +367,8 @@ exports.deleteCity = async function (req, res) {
       {
         $set: {
           isdeleted: "Yes",
-          logModifiedDate: logDate
-        }
+          logModifiedDate: logDate,
+        },
       },
       { new: true }
     );
@@ -228,7 +376,7 @@ exports.deleteCity = async function (req, res) {
     if (City) {
       res.status(200).json({
         success: true,
-        message: "City has been deleted successfully"
+        message: "City has been deleted successfully",
       });
     }
   } catch (err) {

@@ -44,4 +44,11 @@ reportRoutes.post(
   reportController.bookingReport
 );
 
+reportRoutes.post(
+  "/bookingexpiringreport",
+  verifyAdminToken,
+  // upload_profileImg.none(),
+  reportController.bookingExpiringReport
+);
+
 module.exports = reportRoutes;

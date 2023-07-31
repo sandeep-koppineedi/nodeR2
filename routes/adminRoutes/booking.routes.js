@@ -19,43 +19,45 @@ bookRoutes.post(
 );
 
 bookRoutes.post(
-  "/getall",
+  "/getallpending",
   verifyAdminToken,
   upload_profileImg.none(),
-  bookController.getAllBookings
+  bookController.getAllPendingBookings
 );
 
-// bookRoutes.post(
-//   "/getalldropdown",
-//   upload_profileImg.none(),
-//   bookController.getAllNonDeletedCities
-// );
+bookRoutes.post(
+  "/getallaccepted",
+  verifyAdminToken,
+  upload_profileImg.none(),
+  bookController.getAllAcceptedBookings
+);
 
-// bookRoutes.post(
-//   "/getallbydistid",
-//   upload_profileImg.none(),
-//   bookController.getAllCitiesByDist
-// );
+bookRoutes.post(
+  "/getallassigned",
+  verifyAdminToken,
+  upload_profileImg.none(),
+  bookController.getAllAssignedBookings
+);
 
-// bookRoutes.post(
-//   "/getdetails",
-//   verifyAdminToken,
-//   upload_profileImg.none(),
-//   bookController.getCity
-// );
+bookRoutes.post(
+  "/getallinprogress",
+  verifyAdminToken,
+  upload_profileImg.none(),
+  bookController.getAllInProgressBookings
+);
 
-// bookRoutes.put(
-//   "/editcity/:id",
-//   verifyAdminToken,
-//   upload_profileImg.none(),
-//   bookController.editCity
-// );
+bookRoutes.post(
+  "/getallcompleted",
+  verifyAdminToken,
+  upload_profileImg.none(),
+  bookController.getAllCompletedBookings
+);
 
-// bookRoutes.delete(
-//   "/deletecity/:id",
-//   verifyAdminToken,
-//   upload_profileImg.none(),
-//   bookController.deleteCity
-// );
+bookRoutes.post(
+  "/getallcanceled",
+  verifyAdminToken,
+  upload_profileImg.none(),
+  bookController.getAllCanceledBookings
+);
 
 module.exports = bookRoutes;

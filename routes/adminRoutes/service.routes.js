@@ -19,11 +19,17 @@ serviceRoutes.post(
 );
 
 serviceRoutes.post(
-  "/getall",
+  "/getallpending",
   verifyAdminToken,
   upload_profileImg.none(),
-  serviceController.getAllServices
+  serviceController.getAllPendingServices
 );
 
+serviceRoutes.post(
+  "/getallcompleted",
+  verifyAdminToken,
+  upload_profileImg.none(),
+  serviceController.getAllCompletedServices
+);
 
 module.exports = serviceRoutes;

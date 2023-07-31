@@ -4,7 +4,7 @@ const cors = require("cors");
 
 //controller
 const authController = require("../../controller/vendor/vendor.controller");
-// const employeeController = require("../../controller/admin/employee.controller");
+const dashController = require("../../controller/vendor/dashboard.controller");
 
 //middlewares
 const { verifyAdminToken } = require("../../middleware/verifyToken");
@@ -50,6 +50,15 @@ authRoutes.put(
   verifyAdminToken,
   upload_franchise.none(),
   authController.changeVendorPassword
+);
+
+
+// /************* DASHBOARD **********/
+authRoutes.post(
+  "/getdashboard",
+  verifyAdminToken,
+  upload_franchise.none(),
+  dashController.getDashboard
 );
 
 module.exports = authRoutes;

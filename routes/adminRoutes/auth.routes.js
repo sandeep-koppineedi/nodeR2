@@ -4,6 +4,7 @@ const cors = require("cors");
 
 //controller
 const adminController = require("../../controller/admin/admin.controller");
+const dashController = require("../../controller/admin/dashboard.controller");
 
 //middlewares
 const { verifyAdminToken } = require("../../middleware/verifyToken");
@@ -70,11 +71,11 @@ adminRoutes.post(
 );
 
 // /************* DASHBOARD **********/
-// adminRoutes.post(
-//   "/getdashboard",
-//   verifyAdminToken,
-//   upload_profileImg.none(),
-//   dashController.getDashboardItems
-// );
+adminRoutes.post(
+  "/getdashboard",
+  verifyAdminToken,
+  upload_profileImg.none(),
+  dashController.getDashboard
+);
 
 module.exports = adminRoutes;

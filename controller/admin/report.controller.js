@@ -22,8 +22,8 @@ exports.servicemanReport = async function (req, res) {
           { stateName: regex },
           { districtName: regex },
           { cityName: regex },
-          { email: regex }
-        ]
+          { email: regex },
+        ],
       };
     }
     condition.isdelete = "No";
@@ -33,7 +33,7 @@ exports.servicemanReport = async function (req, res) {
     if (dates.length > 1) {
       condition.logCreatedDate = {
         $gte: dates[0] + "T00:00:00.000Z",
-        $lte: dates[1] + "T23:59:59.999Z"
+        $lte: dates[1] + "T23:59:59.999Z",
       };
     } else if (dates.length == 1) {
       condition.logCreatedDate = dates[0] + "T00:00:00.000Z";
@@ -58,7 +58,7 @@ exports.servicemanReport = async function (req, res) {
         "District Name": val.districtName,
         "City Name": val.cityName,
         "Complete Address": val.address,
-        "Joining Date": val.logCreatedDate
+        "Joining Date": val.logCreatedDate,
       };
 
       servicemanExcel.push(obj);
@@ -68,7 +68,7 @@ exports.servicemanReport = async function (req, res) {
       success: true,
       message: "Serviceman report data has been retrieved successfully",
       serviceman: serviceman,
-      servicemanExcel: servicemanExcel
+      servicemanExcel: servicemanExcel,
     });
   } catch (err) {
     res
@@ -90,8 +90,8 @@ exports.customerReport = async function (req, res) {
           { phone: regex },
           { email: regex },
           { franchiseName: regex },
-          { servicemanName: regex }
-        ]
+          { servicemanName: regex },
+        ],
       };
     }
     condition.isdelete = "No";
@@ -101,7 +101,7 @@ exports.customerReport = async function (req, res) {
     if (dates.length > 1) {
       condition.logCreatedDate = {
         $gte: dates[0] + "T00:00:00.000Z",
-        $lte: dates[1] + "T23:59:59.999Z"
+        $lte: dates[1] + "T23:59:59.999Z",
       };
     } else if (dates.length == 1) {
       condition.logCreatedDate = dates[0] + "T00:00:00.000Z";
@@ -123,7 +123,7 @@ exports.customerReport = async function (req, res) {
         "Franchise Phone": val.franchisePhone,
         "Serviceman Name": val.servicemanName,
         "Serviceman Phone": val.servicemanPhone,
-        "Joining Date": val.logCreatedDate
+        "Joining Date": val.logCreatedDate,
       };
 
       customerExcel.push(obj);
@@ -133,7 +133,7 @@ exports.customerReport = async function (req, res) {
       success: true,
       message: "Customer report data has been retrieved successfully",
       customer: customer,
-      customerExcel: customerExcel
+      customerExcel: customerExcel,
     });
   } catch (err) {
     res
@@ -159,8 +159,8 @@ exports.franchiseReport = async function (req, res) {
           { districtName: regex },
           { cityName: regex },
           { email: regex },
-          { phone: regex }
-        ]
+          { phone: regex },
+        ],
       };
     }
     condition.status = "active";
@@ -170,7 +170,7 @@ exports.franchiseReport = async function (req, res) {
     if (dates.length > 1) {
       condition.logCreatedDate = {
         $gte: dates[0] + "T00:00:00.000Z",
-        $lte: dates[1] + "T23:59:59.999Z"
+        $lte: dates[1] + "T23:59:59.999Z",
       };
     } else if (dates.length == 1) {
       condition.logCreatedDate = dates[0] + "T00:00:00.000Z";
@@ -196,7 +196,7 @@ exports.franchiseReport = async function (req, res) {
         "Franchise User Name": val.userName,
         "Franchise Email": val.email,
         "Franchise Phone": val.phone,
-        "Joining Date": val.logCreatedDate
+        "Joining Date": val.logCreatedDate,
       };
 
       vendorExcel.push(obj);
@@ -206,7 +206,7 @@ exports.franchiseReport = async function (req, res) {
       success: true,
       message: "Franchise report data has been retrieved successfully",
       vendor: vendor,
-      vendorExcel: vendorExcel
+      vendorExcel: vendorExcel,
     });
   } catch (err) {
     res
@@ -229,8 +229,8 @@ exports.serviceReport = async function (req, res) {
           { franchisePhone: regex },
           { servicemanName: regex },
           { servicemanPhone: regex },
-          { status: regex }
-        ]
+          { status: regex },
+        ],
       };
     }
 
@@ -239,7 +239,7 @@ exports.serviceReport = async function (req, res) {
     if (dates.length > 1) {
       condition.logCreatedDate = {
         $gte: dates[0] + "T00:00:00.000Z",
-        $lte: dates[1] + "T23:59:59.999Z"
+        $lte: dates[1] + "T23:59:59.999Z",
       };
     } else if (dates.length == 1) {
       condition.logCreatedDate = dates[0] + "T00:00:00.000Z";
@@ -263,7 +263,7 @@ exports.serviceReport = async function (req, res) {
         "Total Amount": val.totalAmount,
         "Service ID": val.serviceId,
         "Service Status": val.status,
-        "Service Raise Date": val.logCreatedDate
+        "Service Raise Date": val.logCreatedDate,
       };
 
       serviceExcel.push(obj);
@@ -273,7 +273,7 @@ exports.serviceReport = async function (req, res) {
       success: true,
       message: "Service report data has been retrieved successfully",
       serviceReport: service,
-      serviceExcel: serviceExcel
+      serviceExcel: serviceExcel,
     });
   } catch (err) {
     res
@@ -298,8 +298,8 @@ exports.bookingReport = async function (req, res) {
           { orderId: regex },
           { transactionId: regex },
           { subscribeDate: regex },
-          { expiryDate: regex }
-        ]
+          { expiryDate: regex },
+        ],
       };
     }
 
@@ -308,7 +308,7 @@ exports.bookingReport = async function (req, res) {
     if (dates.length > 1) {
       condition.logCreatedDate = {
         $gte: dates[0] + "T00:00:00.000Z",
-        $lte: dates[1] + "T23:59:59.999Z"
+        $lte: dates[1] + "T23:59:59.999Z",
       };
     } else if (dates.length == 1) {
       condition.logCreatedDate = dates[0] + "T00:00:00.000Z";
@@ -335,17 +335,104 @@ exports.bookingReport = async function (req, res) {
         "Subscribe Date": val.subscribeDate,
         "Expiry Date": val.expiryDate,
         "Booking Status": val.status,
-        "Booking Date": val.logCreatedDate
+        "Booking Date": val.logCreatedDate,
       };
 
       bookingExcel.push(obj);
+    });
+
+    bookingExcel = bookingExcel.sort((a, b) => {
+      return a["Booking Date"] > b["Booking Date"] ? -1 : 1;
     });
 
     res.status(200).json({
       success: true,
       message: "Booking report data has been retrieved successfully",
       bookingReport: booking,
-      bookingExcel: bookingExcel
+      bookingExcel: bookingExcel,
+    });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message ?? "Bad request" });
+  }
+};
+
+// expiring report
+exports.bookingExpiringReport = async function (req, res) {
+  try {
+    const todayDate = new Date().toISOString().slice(0, 10);
+    const threeDaysFromNow = new Date();
+    threeDaysFromNow.setDate(threeDaysFromNow.getDate() + 3);
+    const threeDaysFromNowString = threeDaysFromNow.toISOString().slice(0, 10);
+
+    let condition = {};
+    let regex = new RegExp(req.body.searchQuery, "i");
+
+    if (req.body.searchQuery !== "") {
+      condition = {
+        $or: [
+          { userName: regex },
+          { franchiseName: regex },
+          { franchisePhone: regex },
+          { planName: regex },
+          { orderId: regex },
+          { transactionId: regex },
+          { subscribeDate: regex },
+          { expiryDate: regex },
+        ],
+      };
+    }
+    condition.status = "completed";
+    condition.expiryDate = { $gte: todayDate, $lte: threeDaysFromNowString };
+
+    var dates = req.body.logCreatedDate;
+
+    if (dates.length > 1) {
+      condition.logCreatedDate = {
+        $gte: dates[0] + "T00:00:00.000Z",
+        $lte: dates[1] + "T23:59:59.999Z",
+      };
+    } else if (dates.length == 1) {
+      condition.logCreatedDate = dates[0] + "T00:00:00.000Z";
+    }
+    console.log(condition);
+
+    const booking = await bookingModel
+      .find(condition)
+      .sort({ logCreatedDate: -1 });
+
+    let bookingExcel = [];
+    booking.map((val) => {
+      let obj = {
+        "Customer Name": val.userName,
+        "Franchise Name": val.franchiseName,
+        "Franchise Phone Number": val.franchisePhone,
+        "Plan Name": val.planName,
+        "Plan Duration": val.planPriod,
+        "Plan Amount": val.planAmount,
+        "Tax Applicable": val.tax,
+        "Total Amount": val.totalAmount,
+        "Order ID": val.orderId,
+        "Transaction ID": val.transactionId,
+        "Subscribe Date": val.subscribeDate,
+        "Expiry Date": val.expiryDate,
+        "Booking Status": val.status,
+        "Booking Date": val.logCreatedDate,
+      };
+
+      bookingExcel.push(obj);
+    });
+
+    bookingExcel = bookingExcel.sort((a, b) => {
+      return a["Booking Date"] > b["Booking Date"] ? -1 : 1;
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Booking report data has been retrieved successfully",
+      bookingExpiringReport: booking,
+      bookingExpiringExcel: bookingExcel,
     });
   } catch (err) {
     res

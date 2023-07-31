@@ -12,10 +12,17 @@ const { upload_profileImg } = require("../../middleware/uploadImage");
 
 //admin registration
 serviceRoutes.post(
-  "/getall",
+  "/getallpending",
   verifyAdminToken,
   upload_profileImg.none(),
-  serviceController.getAllServices
+  serviceController.getAllPendingServices
+);
+
+serviceRoutes.post(
+  "/getallcompleted",
+  verifyAdminToken,
+  upload_profileImg.none(),
+  serviceController.getAllCompletedServices
 );
 
 serviceRoutes.post(

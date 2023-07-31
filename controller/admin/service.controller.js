@@ -25,7 +25,7 @@ exports.addService = async function (req, res) {
       serviceId: "KNV" + randomNumber,
       status: "pending",
       logCreatedDate: logDate,
-      logModifiedDate: logDate
+      logModifiedDate: logDate,
     });
 
     const saveServe = await serveObj.save();
@@ -39,16 +39,17 @@ exports.addService = async function (req, res) {
   }
 };
 
-// get all Services
-exports.getAllServices = async function (req, res) {
+// get all panding Services
+exports.getAllPendingServices = async function (req, res) {
   try {
     let condition = {};
     let regex = new RegExp(req.query.searchQuery, "i");
     if (req.query.searchQuery) {
       condition = {
-        $or: [{ userName: regex }, { status: regex }, { serviceId: regex }]
+        $or: [{ userName: regex }, { status: regex }, { serviceId: regex }],
       };
     }
+    condition.status = "pending";
     console.log(condition);
 
     const data = await serviceModel
@@ -58,7 +59,36 @@ exports.getAllServices = async function (req, res) {
     res.status(200).json({
       success: true,
       message: "Services have been retrieved successfully",
-      serviceResult: data
+      serviceResult: data,
+    });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message ?? "Bad request" });
+  }
+};
+
+// get all completed Services
+exports.getAllCompletedServices = async function (req, res) {
+  try {
+    let condition = {};
+    let regex = new RegExp(req.query.searchQuery, "i");
+    if (req.query.searchQuery) {
+      condition = {
+        $or: [{ userName: regex }, { status: regex }, { serviceId: regex }],
+      };
+    }
+    condition.status = "completed";
+    console.log(condition);
+
+    const data = await serviceModel
+      .find(condition)
+      .sort({ logCreatedDate: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "Services have been retrieved successfully",
+      serviceResult: data,
     });
   } catch (err) {
     res

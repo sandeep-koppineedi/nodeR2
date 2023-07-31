@@ -73,7 +73,7 @@ exports.addBooking = async function (req, res) {
       expiryDate: monthDate,
       status: "pending",
       logCreatedDate: logDate,
-      logModifiedDate: logDate
+      logModifiedDate: logDate,
     });
 
     const saveBooking = await bookObj.save();
@@ -87,16 +87,17 @@ exports.addBooking = async function (req, res) {
   }
 };
 
-// get all cities
-exports.getAllBookings = async function (req, res) {
+// get all pending bookings
+exports.getAllPendingBookings = async function (req, res) {
   try {
     let condition = {};
     let regex = new RegExp(req.query.searchQuery, "i");
     if (req.query.searchQuery) {
       condition = {
-        $or: [{ userName: regex }, { planName: regex }, { status: regex }]
+        $or: [{ userName: regex }, { planName: regex }],
       };
     }
+    condition.status = "pending";
     condition.franchiseId = req.userId;
     console.log(condition);
 
@@ -107,7 +108,157 @@ exports.getAllBookings = async function (req, res) {
     res.status(200).json({
       success: true,
       message: "Bookings have been retrieved successfully",
-      bookingResult: data
+      bookingResult: data,
+    });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message ?? "Bad request" });
+  }
+};
+
+// get all Accepted bookings
+exports.getAllAcceptedBookings = async function (req, res) {
+  try {
+    let condition = {};
+    let regex = new RegExp(req.query.searchQuery, "i");
+    if (req.query.searchQuery) {
+      condition = {
+        $or: [{ userName: regex }, { planName: regex }],
+      };
+    }
+    condition.status = "accepted";
+    condition.franchiseId = req.userId;
+    console.log(condition);
+
+    const data = await bookingModel
+      .find(condition)
+      .sort({ logCreatedDate: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "Bookings have been retrieved successfully",
+      bookingResult: data,
+    });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message ?? "Bad request" });
+  }
+};
+
+// get all Assigned bookings
+exports.getAllAssignedBookings = async function (req, res) {
+  try {
+    let condition = {};
+    let regex = new RegExp(req.query.searchQuery, "i");
+    if (req.query.searchQuery) {
+      condition = {
+        $or: [{ userName: regex }, { planName: regex }],
+      };
+    }
+    condition.status = "assigned";
+    condition.franchiseId = req.userId;
+    console.log(condition);
+
+    const data = await bookingModel
+      .find(condition)
+      .sort({ logCreatedDate: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "Bookings have been retrieved successfully",
+      bookingResult: data,
+    });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message ?? "Bad request" });
+  }
+};
+
+// get all InProgress bookings
+exports.getAllInProgressBookings = async function (req, res) {
+  try {
+    let condition = {};
+    let regex = new RegExp(req.query.searchQuery, "i");
+    if (req.query.searchQuery) {
+      condition = {
+        $or: [{ userName: regex }, { planName: regex }],
+      };
+    }
+    condition.status = "inProgress";
+    condition.franchiseId = req.userId;
+    console.log(condition);
+
+    const data = await bookingModel
+      .find(condition)
+      .sort({ logCreatedDate: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "Bookings have been retrieved successfully",
+      bookingResult: data,
+    });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message ?? "Bad request" });
+  }
+};
+
+// get all Completed bookings
+exports.getAllCompletedBookings = async function (req, res) {
+  try {
+    let condition = {};
+    let regex = new RegExp(req.query.searchQuery, "i");
+    if (req.query.searchQuery) {
+      condition = {
+        $or: [{ userName: regex }, { planName: regex }],
+      };
+    }
+    condition.status = "completed";
+    condition.franchiseId = req.userId;
+    console.log(condition);
+
+    const data = await bookingModel
+      .find(condition)
+      .sort({ logCreatedDate: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "Bookings have been retrieved successfully",
+      bookingResult: data,
+    });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message ?? "Bad request" });
+  }
+};
+
+// get all Canceled bookings
+exports.getAllCanceledBookings = async function (req, res) {
+  try {
+    let condition = {};
+    let regex = new RegExp(req.query.searchQuery, "i");
+    if (req.query.searchQuery) {
+      condition = {
+        $or: [{ userName: regex }, { planName: regex }],
+      };
+    }
+    condition.status = "canceled";
+    condition.franchiseId = req.userId;
+    console.log(condition);
+
+    const data = await bookingModel
+      .find(condition)
+      .sort({ logCreatedDate: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "Bookings have been retrieved successfully",
+      bookingResult: data,
     });
   } catch (err) {
     res
@@ -124,7 +275,7 @@ exports.getBookingDetails = async function (req, res) {
     res.status(200).json({
       success: true,
       message: "Booking has been retrieved successfully",
-      bookingResult: data ?? {}
+      bookingResult: data ?? {},
     });
   } catch (err) {
     res
@@ -137,14 +288,14 @@ exports.getBookingDetails = async function (req, res) {
 exports.editBookingStatus = async function (req, res) {
   try {
     const logDate = new Date().toISOString();
-    
+
     const Booking = await bookingModel.updateOne(
       { _id: req.params.id },
       {
         $set: {
           status: req.body.status,
-          logModifiedDate: logDate
-        }
+          logModifiedDate: logDate,
+        },
       },
       { new: true }
     );
@@ -152,7 +303,7 @@ exports.editBookingStatus = async function (req, res) {
     if (Booking) {
       res.status(200).json({
         success: true,
-        message: "Booking status has been updated successfully"
+        message: "Booking status has been updated successfully",
       });
     }
   } catch (err) {

@@ -12,10 +12,45 @@ const { upload_profileImg } = require("../../middleware/uploadImage");
 
 //admin registration
 bookRoutes.post(
-  "/getall",
+  "/getallpending",
   verifyAdminToken,
   upload_profileImg.none(),
-  bookController.getAllBookings
+  bookController.getAllPendingBookings
+);
+
+bookRoutes.post(
+  "/getallaccepted",
+  verifyAdminToken,
+  upload_profileImg.none(),
+  bookController.getAllAcceptedBookings
+);
+
+bookRoutes.post(
+  "/getallassigned",
+  verifyAdminToken,
+  upload_profileImg.none(),
+  bookController.getAllAssignedBookings
+);
+
+bookRoutes.post(
+  "/getallinprogress",
+  verifyAdminToken,
+  upload_profileImg.none(),
+  bookController.getAllInProgressBookings
+);
+
+bookRoutes.post(
+  "/getallcompleted",
+  verifyAdminToken,
+  upload_profileImg.none(),
+  bookController.getAllCompletedBookings
+);
+
+bookRoutes.post(
+  "/getallcanceled",
+  verifyAdminToken,
+  upload_profileImg.none(),
+  bookController.getAllCanceledBookings
 );
 
 bookRoutes.post(
