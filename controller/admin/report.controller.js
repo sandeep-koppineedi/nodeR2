@@ -440,3 +440,86 @@ exports.bookingExpiringReport = async function (req, res) {
       .json({ success: false, message: err.message ?? "Bad request" });
   }
 };
+
+// expired report
+exports.bookingExpiredReport = async function (req, res) {
+  try {
+    const todayDate = new Date().toISOString().slice(0, 10);
+    // const threeDaysFromNow = new Date();
+    // threeDaysFromNow.setDate(threeDaysFromNow.getDate() + 3);
+    // const threeDaysFromNowString = threeDaysFromNow.toISOString().slice(0, 10);
+
+    let condition = {};
+    let regex = new RegExp(req.body.searchQuery, "i");
+
+    if (req.body.searchQuery !== "") {
+      condition = {
+        $or: [
+          { userName: regex },
+          { franchiseName: regex },
+          { franchisePhone: regex },
+          { planName: regex },
+          { orderId: regex },
+          { transactionId: regex },
+          { subscribeDate: regex },
+          { expiryDate: regex },
+        ],
+      };
+    }
+    condition.status = "completed";
+    condition.expiryDate = { $lt: todayDate };
+
+    var dates = req.body.logCreatedDate;
+
+    if (dates.length > 1) {
+      condition.logCreatedDate = {
+        $gte: dates[0] + "T00:00:00.000Z",
+        $lte: dates[1] + "T23:59:59.999Z",
+      };
+    } else if (dates.length == 1) {
+      condition.logCreatedDate = dates[0] + "T00:00:00.000Z";
+    }
+    console.log(condition);
+
+    const booking = await bookingModel
+      .find(condition)
+      .sort({ logCreatedDate: -1 });
+
+    let bookingExcel = [];
+    booking.map((val) => {
+      let obj = {
+        "Customer Name": val.userName,
+        "Franchise Name": val.franchiseName,
+        "Franchise Phone Number": val.franchisePhone,
+        "Plan Name": val.planName,
+        "Plan Duration": val.planPriod,
+        "Plan Amount": val.planAmount,
+        "Tax Applicable": val.tax,
+        "Total Amount": val.totalAmount,
+        "Order ID": val.orderId,
+        "Transaction ID": val.transactionId,
+        "Subscribe Date": val.subscribeDate,
+        "Expiry Date": val.expiryDate,
+        "Booking Status": val.status,
+        "Booking Date": val.logCreatedDate,
+      };
+
+      bookingExcel.push(obj);
+    });
+
+    bookingExcel = bookingExcel.sort((a, b) => {
+      return a["Booking Date"] > b["Booking Date"] ? -1 : 1;
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Booking report data has been retrieved successfully",
+      bookingExpiringReport: booking,
+      bookingExpiringExcel: bookingExcel,
+    });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message ?? "Bad request" });
+  }
+};

@@ -17,9 +17,33 @@ reportRoutes.post(
 );
 
 reportRoutes.post(
+  "/bookingexpiringreport",
+  verifyAdminToken,
+  reportController.bookingExpiringReport
+);
+
+reportRoutes.post(
+  "/bookingexpiredreport",
+  verifyAdminToken,
+  reportController.bookingExpiredReport
+);
+
+reportRoutes.post(
   "/servicereport",
   verifyAdminToken,
   reportController.serviceReport
+);
+
+reportRoutes.post(
+  "/customerreport",
+  verifyAdminToken,
+  reportController.customerReport
+);
+
+reportRoutes.post(
+  "/servicemanreport",
+  verifyAdminToken,
+  reportController.servicemanReport
 );
 
 module.exports = reportRoutes;

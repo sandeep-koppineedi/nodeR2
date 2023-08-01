@@ -51,4 +51,11 @@ reportRoutes.post(
   reportController.bookingExpiringReport
 );
 
+reportRoutes.post(
+  "/bookingexpiredreport",
+  verifyAdminToken,
+  // upload_profileImg.none(),
+  reportController.bookingExpiredReport
+);
+
 module.exports = reportRoutes;
