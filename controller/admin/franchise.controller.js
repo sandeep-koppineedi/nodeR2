@@ -15,8 +15,8 @@ exports.addFranchise = async function (req, res) {
         { companyName: req.body.companyName },
         { supportEmail: req.body.supportEmail },
         { bookingEmail: req.body.bookingEmail },
-        { email: req.body.email }
-      ]
+        { email: req.body.email },
+      ],
     });
 
     if (french) {
@@ -63,25 +63,25 @@ exports.addFranchise = async function (req, res) {
         password: pass,
         status: "active",
         logCreatedDate: logDate,
-        logModifiedDate: logDate
+        logModifiedDate: logDate,
       });
       const saveFranchise = await franchiseObj.save();
       if (saveFranchise) {
         return res.status(200).json({
           success: true,
-          message: "Franchise has been added successfully"
+          message: "Franchise has been added successfully",
         });
       } else {
         return res.status(400).json({
           success: false,
-          message: "Franchise could not be added"
+          message: "Franchise could not be added",
         });
       }
     }
   } catch (error) {
     res.status(400).json({
       success: false,
-      message: error.message ?? "Something went wrong!"
+      message: error.message ?? "Something went wrong!",
     });
   }
 };
@@ -100,8 +100,8 @@ exports.getAllFranchisees = async function (req, res) {
           { bookingEmail: regex },
           { stateName: regex },
           { districtName: regex },
-          { cityName: regex }
-        ]
+          { cityName: regex },
+        ],
       };
     }
     console.log(condition);
@@ -113,12 +113,12 @@ exports.getAllFranchisees = async function (req, res) {
     res.status(200).json({
       success: true,
       message: "Franchises have been retrieved successfully",
-      franchResult: result
+      franchResult: result,
     });
   } catch (err) {
     res.status(400).json({
       success: false,
-      message: err.message ?? "Bad request"
+      message: err.message ?? "Bad request",
     });
   }
 };
@@ -133,12 +133,12 @@ exports.getAllDropdownFranchisees = async function (req, res) {
     res.status(200).json({
       success: true,
       message: "Franchises have been retrieved successfully",
-      franchResult: result
+      franchResult: result,
     });
   } catch (err) {
     res.status(400).json({
       success: false,
-      message: err.message ?? "Bad request"
+      message: err.message ?? "Bad request",
     });
   }
 };
@@ -151,12 +151,12 @@ exports.getFranchise = async function (req, res) {
     res.status(200).json({
       success: true,
       message: "Franchise data has been retrieved successfully",
-      franchResult: result
+      franchResult: result,
     });
   } catch (err) {
     res.status(400).json({
       success: false,
-      message: err.message ?? "Bad request"
+      message: err.message ?? "Bad request",
     });
   }
 };
@@ -204,8 +204,8 @@ exports.editFranchise = async function (req, res) {
           userName: req.body.userName,
           email: req.body.email,
           phone: req.body.phone,
-          logModifiedDate: logDate
-        }
+          logModifiedDate: logDate,
+        },
       },
       { new: true }
     );
@@ -213,18 +213,18 @@ exports.editFranchise = async function (req, res) {
     if (result) {
       return res.status(200).json({
         success: true,
-        message: "Franchise has been updated successfully"
+        message: "Franchise has been updated successfully",
       });
     } else {
       return res.status(400).json({
         success: false,
-        message: "Franchise could not be updated"
+        message: "Franchise could not be updated",
       });
     }
   } catch (err) {
     res.status(400).json({
       success: false,
-      message: err.message ?? "Something went wrong!"
+      message: err.message ?? "Something went wrong!",
     });
   }
 };
@@ -239,8 +239,8 @@ exports.changeFranchStatus = async function (req, res) {
       {
         $set: {
           status: req.body.status,
-          logModifiedDate: logDate
-        }
+          logModifiedDate: logDate,
+        },
       },
       { new: true }
     );
@@ -248,18 +248,18 @@ exports.changeFranchStatus = async function (req, res) {
     if (result) {
       return res.status(200).json({
         success: true,
-        message: "Franchise status has been updated successfully"
+        message: "Franchise status has been updated successfully",
       });
     } else {
       return res.status(400).json({
         success: false,
-        message: "Franchise status could not be updated"
+        message: "Franchise status could not be updated",
       });
     }
   } catch (err) {
     res.status(400).json({
       success: false,
-      message: err.message ?? "Something went wrong!"
+      message: err.message ?? "Something went wrong!",
     });
   }
 };
