@@ -68,6 +68,35 @@ exports.getAllPendingServices = async function (req, res) {
   }
 };
 
+// get all accepted Services
+exports.getAllAcceptedServices = async function (req, res) {
+  try {
+    let condition = {};
+    let regex = new RegExp(req.query.searchQuery, "i");
+    if (req.query.searchQuery) {
+      condition = {
+        $or: [{ userName: regex }, { status: regex }, { serviceId: regex }],
+      };
+    }
+    condition.status = "accepted";
+    console.log(condition);
+
+    const data = await serviceModel
+      .find(condition)
+      .sort({ logCreatedDate: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "Services have been retrieved successfully",
+      serviceResult: data,
+    });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message ?? "Bad request" });
+  }
+};
+
 // get all completed Services
 exports.getAllCompletedServices = async function (req, res) {
   try {
@@ -94,5 +123,35 @@ exports.getAllCompletedServices = async function (req, res) {
     res
       .status(400)
       .json({ success: false, message: err.message ?? "Bad request" });
+  }
+};
+
+// update service status
+exports.updateStatus = async function (req, res) {
+  try {
+    const logDate = new Date().toISOString();
+
+    const upStatus = await serviceModel.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          status: req.body.status,
+          logModifiedDate: logDate,
+        },
+      },
+      { new: true }
+    );
+
+    if (upStatus) {
+      res.status(200).json({
+        success: true,
+        message: "Service status has been updated successfully",
+      });
+    }
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: err.message ?? "Something went wrong!",
+    });
   }
 };

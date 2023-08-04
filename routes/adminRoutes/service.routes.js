@@ -26,6 +26,13 @@ serviceRoutes.post(
 );
 
 serviceRoutes.post(
+  "/getallaccepted",
+  verifyAdminToken,
+  upload_profileImg.none(),
+  serviceController.getAllAcceptedServices
+);
+
+serviceRoutes.post(
   "/getallcompleted",
   verifyAdminToken,
   upload_profileImg.none(),

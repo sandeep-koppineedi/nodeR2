@@ -19,11 +19,31 @@ complaintRoutes.post(
 );
 
 complaintRoutes.post(
-  "/getall",
+  "/getallpending",
   verifyAdminToken,
   upload_complaint.none(),
-  complaintController.getAllComplaint
+  complaintController.getAllPendingComplaint
 );
 
+complaintRoutes.post(
+  "/getallcompleted",
+  verifyAdminToken,
+  upload_complaint.none(),
+  complaintController.getAllCompletedComplaint
+);
+
+complaintRoutes.post(
+  "/getallrejected",
+  verifyAdminToken,
+  upload_complaint.none(),
+  complaintController.getAllRejectedComplaint
+);
+
+complaintRoutes.put(
+  "/updatestatus/:id",
+  verifyAdminToken,
+  upload_complaint.none(),
+  complaintController.updateComplaintStatus
+);
 
 module.exports = complaintRoutes;

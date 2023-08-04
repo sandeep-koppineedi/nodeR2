@@ -161,3 +161,26 @@ exports.upload_bannerImg = multer({
   },
   limits: { fileSize: bannerImgMaxSize }
 });
+
+// middleware for uploading the commonNotification
+const commonNotificationStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads/commonNotification");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  }
+});
+const commonNotificationMaxSize = 30 * 1024 * 1024;
+exports.upload_commonNotification = multer({
+  storage: commonNotificationStorage,
+  fileFilter: (req, file, cb) => {
+    if (file.originalname.match(/\.(png|PNG|jpg|pdf)$/)) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error("This file extension is not allowed"));
+    }
+  },
+  limits: { fileSize: commonNotificationMaxSize }
+});

@@ -8,27 +8,27 @@ const commonNotifController = require("../../controller/admin/commonNotification
 
 //middlewares
 const { verifyAdminToken } = require("../../middleware/verifyToken");
-const { upload_profileImg } = require("../../middleware/uploadImage");
+const { upload_commonNotification } = require("../../middleware/uploadImage");
 
 //admin registration
 commonNotifRoutes.post(
   "/addnotification",
   verifyAdminToken,
-  upload_profileImg.none(),
+  upload_commonNotification.single("notifImg"),
   commonNotifController.createNotification
 );
 
 commonNotifRoutes.post(
   "/getall",
   verifyAdminToken,
-  upload_profileImg.none(),
+  upload_commonNotification.none(),
   commonNotifController.getAllNotifications
 );
 
 commonNotifRoutes.delete(
   "/delete/:id",
   verifyAdminToken,
-  upload_profileImg.none(),
+  upload_commonNotification.none(),
   commonNotifController.deleteNotification
 );
 

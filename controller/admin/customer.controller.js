@@ -15,9 +15,9 @@ exports.addCustomer = async function (req, res) {
       $and: [
         { isdelete: "No" },
         {
-          $or: [{ phone: req.body.phone }, { email: req.body.email }]
-        }
-      ]
+          $or: [{ phone: req.body.phone }, { email: req.body.email }],
+        },
+      ],
     });
 
     if (french) {
@@ -27,6 +27,10 @@ exports.addCustomer = async function (req, res) {
     } else {
       const logDate = new Date().toISOString();
       const pass = bcrypt.hashSync(req.body.password, 10);
+      const vendor = await franchiseModel.findOne(
+        { _id: req.body.franchiseId },
+        { companyName: 1, companyPhone: 1 }
+      );
 
       const CustomerObj = new customerModel({
         customerName: req.body.customerName,
@@ -34,28 +38,31 @@ exports.addCustomer = async function (req, res) {
         password: pass,
         email: req.body.email,
         address: req.body.address,
+        franchiseId: req.body.franchiseId,
+        franchiseName: vendor ? vendor.companyName : "",
+        franchisePhone: vendor ? vendor.companyPhone : "",
         profilePic: req.file ? req.file.path : "uploads/public/userLogo.png",
         isdelete: "No",
         logCreatedDate: logDate,
-        logModifiedDate: logDate
+        logModifiedDate: logDate,
       });
       const saveCustomer = await CustomerObj.save();
       if (saveCustomer) {
         return res.status(200).json({
           success: true,
-          message: "Customer has been added successfully"
+          message: "Customer has been added successfully",
         });
       } else {
         return res.status(400).json({
           success: false,
-          message: "Customer could not be added"
+          message: "Customer could not be added",
         });
       }
     }
   } catch (error) {
     res.status(400).json({
       success: false,
-      message: error.message ?? "Something went wrong!"
+      message: error.message ?? "Something went wrong!",
     });
   }
 };
@@ -67,7 +74,13 @@ exports.getAllCustomeres = async function (req, res) {
     let regex = new RegExp(req.query.searchQuery, "i");
     if (req.query.searchQuery !== "") {
       condition = {
-        $or: [{ customerName: regex }, { phone: regex }, { email: regex }]
+        $or: [
+          { customerName: regex },
+          { phone: regex },
+          { email: regex },
+          { franchiseName: regex },
+          { franchisePhone: regex },
+        ],
       };
     }
     condition.isdelete = "No";
@@ -80,12 +93,12 @@ exports.getAllCustomeres = async function (req, res) {
     res.status(200).json({
       success: true,
       message: "Customers have been retrieved successfully",
-      custResult: result
+      custResult: result,
     });
   } catch (err) {
     res.status(400).json({
       success: false,
-      message: err.message ?? "Bad request"
+      message: err.message ?? "Bad request",
     });
   }
 };
@@ -98,12 +111,12 @@ exports.getCustomer = async function (req, res) {
     res.status(200).json({
       success: true,
       message: "Customer data has been retrieved successfully",
-      custResult: result
+      custResult: result,
     });
   } catch (err) {
     res.status(400).json({
       success: false,
-      message: err.message ?? "Bad request"
+      message: err.message ?? "Bad request",
     });
   }
 };
@@ -112,6 +125,10 @@ exports.getCustomer = async function (req, res) {
 exports.editCustomer = async function (req, res) {
   try {
     const logDate = new Date().toISOString();
+    const vendor = await franchiseModel.findOne(
+      { _id: req.body.franchiseId },
+      { companyName: 1, companyPhone: 1 }
+    );
 
     const result = await customerModel.updateOne(
       { _id: req.params.id },
@@ -121,9 +138,12 @@ exports.editCustomer = async function (req, res) {
           phone: req.body.phone,
           email: req.body.email,
           address: req.body.address,
+          franchiseId: req.body.franchiseId,
+          franchiseName: vendor ? vendor.companyName : "",
+          franchisePhone: vendor ? vendor.companyPhone : "",
           profilePic: req.file ? req.file.path : console.log("No Img"),
-          logModifiedDate: logDate
-        }
+          logModifiedDate: logDate,
+        },
       },
       { new: true }
     );
@@ -131,18 +151,18 @@ exports.editCustomer = async function (req, res) {
     if (result) {
       return res.status(200).json({
         success: true,
-        message: "Customer has been updated successfully"
+        message: "Customer has been updated successfully",
       });
     } else {
       return res.status(400).json({
         success: false,
-        message: "Customer could not be updated"
+        message: "Customer could not be updated",
       });
     }
   } catch (err) {
     res.status(400).json({
       success: false,
-      message: err.message ?? "Something went wrong!"
+      message: err.message ?? "Something went wrong!",
     });
   }
 };
@@ -157,8 +177,8 @@ exports.changeCustomerAsDelete = async function (req, res) {
       {
         $set: {
           isdelete: "Yes",
-          logModifiedDate: logDate
-        }
+          logModifiedDate: logDate,
+        },
       },
       { new: true }
     );
@@ -166,18 +186,18 @@ exports.changeCustomerAsDelete = async function (req, res) {
     if (result) {
       return res.status(200).json({
         success: true,
-        message: "Customer has been deleted successfully"
+        message: "Customer has been deleted successfully",
       });
     } else {
       return res.status(400).json({
         success: false,
-        message: "Customer could not be deleted"
+        message: "Customer could not be deleted",
       });
     }
   } catch (err) {
     res.status(400).json({
       success: false,
-      message: err.message ?? "Something went wrong!"
+      message: err.message ?? "Something went wrong!",
     });
   }
 };

@@ -15,9 +15,9 @@ exports.addServiceman = async function (req, res) {
       $and: [
         { isdelete: "No" },
         {
-          $or: [{ phone: req.body.phone }, { email: req.body.email }]
-        }
-      ]
+          $or: [{ phone: req.body.phone }, { email: req.body.email }],
+        },
+      ],
     });
 
     if (serve) {
@@ -28,7 +28,7 @@ exports.addServiceman = async function (req, res) {
       if (req.body.password !== req.body.confirmPassword) {
         return res.status(400).json({
           success: false,
-          message: "Password and confirm password does not match!"
+          message: "Password and confirm password does not match!",
         });
       }
 
@@ -43,6 +43,10 @@ exports.addServiceman = async function (req, res) {
       const cityr = await cityModel.findOne(
         { _id: req.body.cityId },
         { title: 1 }
+      );
+      const vendor = await franchiseModel.findOne(
+        { _id: req.body.franchiseId },
+        { companyName: 1, companyPhone: 1 }
       );
 
       const logDate = new Date().toISOString();
@@ -60,6 +64,9 @@ exports.addServiceman = async function (req, res) {
         cityId: req.body.cityId,
         cityName: cityr ? cityr.title : "",
         address: req.body.address,
+        franchiseId: req.body.franchiseId,
+        franchiseName: vendor ? vendor.companyName : "",
+        franchisePhone: vendor ? vendor.companyPhone : "",
         email: req.body.email,
         password: pass,
         profilePic: req.files.profilePic
@@ -68,25 +75,25 @@ exports.addServiceman = async function (req, res) {
         idImage: req.files.idImage ? req.files.idImage[0].path : "",
         isdelete: "No",
         logCreatedDate: logDate,
-        logModifiedDate: logDate
+        logModifiedDate: logDate,
       });
       const saveServe = await serveObj.save();
       if (saveServe) {
         return res.status(200).json({
           success: true,
-          message: "Serviceman has been added successfully"
+          message: "Serviceman has been added successfully",
         });
       } else {
         return res.status(400).json({
           success: false,
-          message: "Serviceman could not be added"
+          message: "Serviceman could not be added",
         });
       }
     }
   } catch (error) {
     res.status(400).json({
       success: false,
-      message: error.message ?? "Something went wrong!"
+      message: error.message ?? "Something went wrong!",
     });
   }
 };
@@ -103,8 +110,8 @@ exports.getAllServicemans = async function (req, res) {
           { lastName: regex },
           { aadhaarNumber: regex },
           { phone: regex },
-          { email: regex }
-        ]
+          { email: regex },
+        ],
       };
     }
     condition.isdelete = "No";
@@ -117,12 +124,12 @@ exports.getAllServicemans = async function (req, res) {
     res.status(200).json({
       success: true,
       message: "Servicemen have been retrieved successfully",
-      serviceResult: result
+      serviceResult: result,
     });
   } catch (err) {
     res.status(400).json({
       success: false,
-      message: err.message ?? "Bad request"
+      message: err.message ?? "Bad request",
     });
   }
 };

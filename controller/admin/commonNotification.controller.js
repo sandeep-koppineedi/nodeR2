@@ -32,7 +32,7 @@ exports.createNotification = async function (req, res) {
       } else {
         const showVendor = await vendorModel.find(
           {
-            $and: [{ _id: { $in: req.body.userList } }, { status: "active" }]
+            $and: [{ _id: { $in: req.body.userList } }, { status: "active" }],
           },
           { _id: 1 }
         );
@@ -56,8 +56,9 @@ exports.createNotification = async function (req, res) {
         users: vendorUsers,
         title: req.body.subject,
         description: req.body.description,
+        notifImg: req.file ? req.file.path : "uploads/public/notif_icon.png",
         logCreatedDate: logData,
-        logModifiedDate: logData
+        logModifiedDate: logData,
       }).save();
       break;
 
@@ -85,7 +86,7 @@ exports.createNotification = async function (req, res) {
       } else {
         const showAgent = await customerModel.find(
           {
-            $and: [{ _id: { $in: req.body.userList } }, { isdelete: "No" }]
+            $and: [{ _id: { $in: req.body.userList } }, { isdelete: "No" }],
           },
           { _id: 1, notificationBell: 1 }
         );
@@ -112,8 +113,9 @@ exports.createNotification = async function (req, res) {
         users: customerUsers,
         title: req.body.subject,
         description: req.body.description,
+        notifImg: req.file ? req.file.path : "uploads/public/notif_icon.png",
         logCreatedDate: logData,
-        logModifiedDate: logData
+        logModifiedDate: logData,
       }).save();
       break;
 
@@ -162,7 +164,7 @@ exports.createNotification = async function (req, res) {
         // staff selected data
         const showEmploi = await vendorModel.find(
           {
-            $and: [{ _id: { $in: req.body.userList } }, { status: "active" }]
+            $and: [{ _id: { $in: req.body.userList } }, { status: "active" }],
           },
           { _id: 1 }
         );
@@ -180,7 +182,7 @@ exports.createNotification = async function (req, res) {
         // customer selected data
         const shoCusts = await customerModel.find(
           {
-            $and: [{ _id: { $in: req.body.userList } }, { isdelete: "No" }]
+            $and: [{ _id: { $in: req.body.userList } }, { isdelete: "No" }],
           },
           { _id: 1, notificationBell: 1 }
         );
@@ -198,7 +200,7 @@ exports.createNotification = async function (req, res) {
         // }else{
         //   console.log("No FCM")
         // }
-        console.log(cstUsers)
+        console.log(cstUsers);
 
         // Concat all users
         allUserIds = [...vndrUser, ...cstUsers];
@@ -211,14 +213,15 @@ exports.createNotification = async function (req, res) {
         users: allUserIds,
         title: req.body.subject,
         description: req.body.description,
+        notifImg: req.file ? req.file.path : "uploads/public/notif_icon.png",
         logCreatedDate: logData,
-        logModifiedDate: logData
+        logModifiedDate: logData,
       }).save();
       break;
   }
   res.status(200).json({
     succes: true,
-    message: "Notification has been added successfully"
+    message: "Notification has been added successfully",
   });
   // } catch {
   //   res.status(400).json({ status: false, message: "Something went wrong..!" });
@@ -242,7 +245,7 @@ exports.getAllNotifications = async function (req, res) {
     res.status(200).json({
       success: true,
       message: "Notifications have been retrieved successfully",
-      notifResult: notifResult
+      notifResult: notifResult,
     });
   } catch (err) {
     res
@@ -255,19 +258,19 @@ exports.getAllNotifications = async function (req, res) {
 exports.deleteNotification = async function (req, res) {
   try {
     const removeNotifcation = await notificationModel.findOneAndDelete({
-      _id: req.params.id
+      _id: req.params.id,
     });
 
     if (removeNotifcation) {
       res.status(200).json({
         success: true,
-        message: "Notification has been removed successfully"
+        message: "Notification has been removed successfully",
       });
     }
   } catch (err) {
     res.status(400).json({
       success: false,
-      message: err.message ?? "Something went wrong!"
+      message: err.message ?? "Something went wrong!",
     });
   }
 };

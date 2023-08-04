@@ -8,6 +8,7 @@ const cors = require("cors");
 const custRoutes = require("./customer.routes");
 const settingRoutes = require("./setting.routes");
 const planPurchaseRoutes = require("./planPurchase.routes");
+const serviceRatingRoutes = require("./servicemanRating.routes");
 
 /***************** Customer API ******************/
 appRoute.use("/auth", custRoutes);
@@ -17,5 +18,8 @@ appRoute.use("/setting", settingRoutes);
 
 /***************** purchaseplan API ******************/
 appRoute.use("/purchaseplan", planPurchaseRoutes);
+
+/***************** servicemanrating API ******************/
+appRoute.use("/servicemanrating", serviceRatingRoutes);
 
 module.exports = appRoute;

@@ -23,6 +23,7 @@ const faqRoutes = require("./faq.routes");
 const bannerRoutes = require("./banner.routes");
 const commonNotifRoutes = require("./commonNotification.routes");
 const reportRoutes = require("./report.routes");
+const serviceRatingRoutes = require("./servicemanRating.routes");
 
 /***************** Admin API ******************/
 adminRoute.use("/auth", adminRoutes);
@@ -80,5 +81,8 @@ adminRoute.use("/commonnotification", commonNotifRoutes);
 
 /***************** report API ******************/
 adminRoute.use("/report", reportRoutes);
+
+/***************** servicemanrating API ******************/
+adminRoute.use("/servicemanrating", serviceRatingRoutes);
 
 module.exports = adminRoute;

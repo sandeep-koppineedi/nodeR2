@@ -7,6 +7,10 @@ const booking = new mongoose.Schema({
     type: String,
     default: ""
   },
+  userPhone: {
+    type: String,
+    default: ""
+  },
   franchiseId: {
     type: mongoose.Schema.Types.ObjectId
   },
@@ -14,6 +18,15 @@ const booking = new mongoose.Schema({
     type: String
   },
   franchisePhone: {
+    type: String
+  },
+  servicemanId: {
+    type: mongoose.Schema.Types.ObjectId
+  },
+  servicemanName: {
+    type: String
+  },
+  servicemanPhone: {
     type: String
   },
   planId: {
@@ -57,6 +70,9 @@ const booking = new mongoose.Schema({
       "canceled"
     ],
     default: "pending"
+  },
+  cancelReason: {
+    type: String
   },
   logCreatedDate: {
     type: String

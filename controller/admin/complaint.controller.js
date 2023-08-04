@@ -24,7 +24,7 @@ exports.addComplaint = async function (req, res) {
       ticketId: "KNV" + randomNumber,
       status: "pending",
       logCreatedDate: logDate,
-      logModifiedDate: logDate
+      logModifiedDate: logDate,
     });
 
     const saveServe = await serveObj.save();
@@ -38,8 +38,8 @@ exports.addComplaint = async function (req, res) {
   }
 };
 
-// get all Complaint
-exports.getAllComplaint = async function (req, res) {
+// get all pending Complaint
+exports.getAllPendingComplaint = async function (req, res) {
   try {
     let condition = {};
     let regex = new RegExp(req.query.searchQuery, "i");
@@ -50,10 +50,11 @@ exports.getAllComplaint = async function (req, res) {
           { userName: regex },
           { status: regex },
           { userPhone: regex },
-          { ticketId: regex }
-        ]
+          { ticketId: regex },
+        ],
       };
     }
+    condition.status = "pending";
     console.log(condition);
 
     const data = await complaintModel
@@ -63,11 +64,112 @@ exports.getAllComplaint = async function (req, res) {
     res.status(200).json({
       success: true,
       message: "Complaints have been retrieved successfully",
-      complaintResult: data
+      complaintResult: data,
     });
   } catch (err) {
     res
       .status(400)
       .json({ success: false, message: err.message ?? "Bad request" });
+  }
+};
+
+// get all CompletedComplaint
+exports.getAllCompletedComplaint = async function (req, res) {
+  try {
+    let condition = {};
+    let regex = new RegExp(req.query.searchQuery, "i");
+    if (req.query.searchQuery) {
+      condition = {
+        $or: [
+          { title: regex },
+          { userName: regex },
+          { status: regex },
+          { userPhone: regex },
+          { ticketId: regex },
+        ],
+      };
+    }
+    condition.status = "completed";
+    console.log(condition);
+
+    const data = await complaintModel
+      .find(condition)
+      .sort({ logCreatedDate: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "Complaints have been retrieved successfully",
+      complaintResult: data,
+    });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message ?? "Bad request" });
+  }
+};
+
+// get all RejectedComplaint
+exports.getAllRejectedComplaint = async function (req, res) {
+  try {
+    let condition = {};
+    let regex = new RegExp(req.query.searchQuery, "i");
+    if (req.query.searchQuery) {
+      condition = {
+        $or: [
+          { title: regex },
+          { userName: regex },
+          { status: regex },
+          { userPhone: regex },
+          { ticketId: regex },
+        ],
+      };
+    }
+    condition.status = "rejected";
+    console.log(condition);
+
+    const data = await complaintModel
+      .find(condition)
+      .sort({ logCreatedDate: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "Complaints have been retrieved successfully",
+      complaintResult: data,
+    });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message ?? "Bad request" });
+  }
+};
+
+// update complaint status
+exports.updateComplaintStatus = async function (req, res) {
+  try {
+    const logDate = new Date().toISOString();
+
+    const upComplaint = await complaintModel.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          status: req.body.status,
+          rejectionReason: req.body.rejectionReason ?? "",
+          logModifiedDate: logDate,
+        },
+      },
+      { new: true }
+    );
+
+    if (upComplaint) {
+      res.status(200).json({
+        success: true,
+        message: "Complaint has been updated successfully",
+      });
+    }
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: err.message ?? "Something went wrong!",
+    });
   }
 };

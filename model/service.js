@@ -7,6 +7,10 @@ const service = new mongoose.Schema({
     type: String,
     default: ""
   },
+  userPhone: {
+    type: String,
+    default: ""
+  },
   franchiseId: {
     type: mongoose.Schema.Types.ObjectId
   },

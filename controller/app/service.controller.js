@@ -15,9 +15,34 @@ exports.addService = async function (req, res) {
     let randomDate = Date.now();
     let randomNumber = randomDate.toString().slice(5, 13);
 
+    const customer = await customerModel.findOne(
+      { _id: req.userId },
+      {
+        customerName: 1,
+        phone: 1,
+        franchiseId: 1,
+        franchiseName: 1,
+        franchisePhone: 1,
+        servicemanId: 1,
+        servicemanName: 1,
+        servicemanPhone: 1,
+      }
+    );
+
     const serveObj = new serviceModel({
-      userId: req.body.userId, // in actual this is customer app API. so use req.userId
-      userName: req.body.userName,
+      userId: req.userId, // in actual this is customer app API. so use req.userId
+      userName: customer ? customer.customerName : "",
+      userPhone: customer ? customer.phone : "",
+      servicemanId: customer
+        ? customer.servicemanId
+        : console.log("No serviceman id"),
+      servicemanName: customer ? customer.servicemanName : "",
+      servicemanPhone: customer ? customer.servicemanPhone : "",
+      franchiseId: customer
+        ? customer.franchiseId
+        : console.log("No franchise id"),
+      franchiseName: customer ? customer.franchiseName : "",
+      franchisePhone: customer ? customer.franchisePhone : "",
       bookingId: req.body.bookingId,
       serviceAmount: req.body.serviceAmount,
       tax: req.body.tax,

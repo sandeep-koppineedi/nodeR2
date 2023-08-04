@@ -36,6 +36,9 @@ const complaint = new mongoose.Schema({
     enum: ["pending", "completed", "rejected"],
     default: "pending"
   },
+  rejectionReason: {
+    type: String
+  },
   logCreatedDate: {
     type: String
   },

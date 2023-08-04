@@ -60,4 +60,11 @@ bookRoutes.post(
   bookController.getAllCanceledBookings
 );
 
+bookRoutes.put(
+  "/cancelbooking/:id",
+  verifyAdminToken,
+  upload_profileImg.none(),
+  bookController.updateBookingStatus
+);
+
 module.exports = bookRoutes;
